@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "244244333712",
+    "project_id": "imagessecurity",
+    "storage_bucket": "imagessecurity.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244244333712:android:a2626a0d6b1689203a0415",
+        "android_client_info": {
+          "package_name": "com.example.images_security"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244244333712-6frqek6sto0m624oqtgp1d6crlfmgbk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5IgSb0DOCs9Cicd-6ixmovY32KD9FDqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244244333712-6frqek6sto0m624oqtgp1d6crlfmgbk6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
