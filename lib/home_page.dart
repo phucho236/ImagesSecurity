@@ -6,6 +6,7 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:images_security/FiresStore/fires_store.dart';
 import 'package:images_security/Model/data_assets_model.dart';
+import 'package:images_security/TestPerformance/test_performance_page.dart';
 import 'package:images_security/profile_user_provider.dart';
 import 'package:images_security/push_images_page.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -55,7 +56,14 @@ class _HomePageState extends State<HomePage> {
             ),
           )
         ],
-        title: const Text('Images Security'),
+        title: GestureDetector(
+            onLongPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TestPerformancePage()),
+              );
+            },
+            child: const Text('Images Security')),
       ),
       body: onLoading
           ? Center(child: CircularProgressIndicator())
@@ -118,12 +126,10 @@ class _HomePageState extends State<HomePage> {
   extractImages(googleId) async {
     List<dynamic> tmp = [];
     await firesStore.getAssetsToken(googleId).then((value) async {
-      print(value.length);
       value.forEach((element) {
         try {
           // Verify a token
           final jwt = JWT.verify(element, SecretKey(googleId));
-          print('Payload: ${jwt.payload}');
           PayLoad payLoad = PayLoad.fromJson(jwt.payload);
           tmp.add(payLoad.base64);
         } on JWTExpiredError {

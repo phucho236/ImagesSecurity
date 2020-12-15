@@ -27,7 +27,6 @@ class _PushImagesPageState extends State<PushImagesPage> {
   String _message = '';
   static String googleId;
   void _handleMessage(dynamic data) {
-    print("this is Data $data");
     lengthProcess = lengthProcess + 1;
     assetsToken.add(data);
     if (lengthProcess == assets.length) {
@@ -63,7 +62,6 @@ class _PushImagesPageState extends State<PushImagesPage> {
     // Sign it
     token = jwt.sign(SecretKey(threadParams.secretKey));
     threadParams.sendPort.send(token);
-    print("Thread " + threadParams.thread.toString() + " Done");
   }
 
   @override

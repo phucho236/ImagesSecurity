@@ -47,7 +47,6 @@ class FiresStore {
         .doc("AssetsToken")
         .get()
         .then((value) async {
-      print(value.data()["AssetsToken"]);
       rp = value.data()["AssetsToken"];
     });
     return rp;

@@ -39,6 +39,8 @@ dependencies:
   dart_jsonwebtoken: ^1.4.0
   firebase_core: ^0.5.3
   cloud_firestore: ^0.14.4
+  pull_to_refresh: ^1.6.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
