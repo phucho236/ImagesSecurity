@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildCtn() {
     return GridView.builder(
       physics: ClampingScrollPhysics(),
-      padding: EdgeInsets.only(bottom: 15,left: 15,right: 15),
+      padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: (0.55),
@@ -61,41 +61,78 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PushImagesPage()),
-              );
-            },
-            icon: Icon(
-              Icons.verified_user,
-              color: Colors.white,
+      body: Stack(
+        children: [
+          RotatedBox(
+            quarterTurns: 1,
+            child: Container(
+              decoration: new BoxDecoration(
+                  image: DecorationImage(
+                image: new AssetImage("assets/images/background-3.gif"),
+                fit: BoxFit.cover,
+              )),
             ),
-          )
+          ),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onLongPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TestPerformancePage()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            "Images Security",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PushImagesPage()),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.verified_user,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SmartRefresher(
+                  controller: _refreshController,
+                  enablePullUp: false,
+                  enablePullDown: true,
+                  child: buildCtn(),
+                  header: WaterDropMaterialHeader(),
+                  onRefresh: () async {
+                    extractImages(googleId);
+                    if (mounted) setState(() {});
+                    _refreshController.refreshCompleted();
+                  },
+                ),
+              ),
+            ],
+          ),
         ],
-        title: GestureDetector(
-            onLongPress: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TestPerformancePage()),
-              );
-            },
-            child: const Text('Images Security')),
-      ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullUp: false,
-        enablePullDown: true,
-        child: buildCtn(),
-        header: WaterDropMaterialHeader(),
-        onRefresh: () async {
-          extractImages(googleId);
-          if (mounted) setState(() {});
-          _refreshController.refreshCompleted();
-        },
       ),
     );
   }
