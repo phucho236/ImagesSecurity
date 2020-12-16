@@ -40,22 +40,26 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget buildCtn() {
-    return GridView.builder(
-      physics: ClampingScrollPhysics(),
-      padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: (0.55),
-      ),
-      itemBuilder: (c, i) => Padding(
-        padding: EdgeInsets.only(
-            top: 15, left: i % 2 == 0 ? 0 : 7.5, right: i % 2 == 0 ? 7.5 : 0),
-        child: Image.memory(
-          base64.decode(base64Images[i]),
-          fit: BoxFit.cover,
+    return SingleChildScrollView(
+      child: GridView.builder(
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
+        primary: true,
+        padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: (0.55),
         ),
+        itemBuilder: (c, i) => Padding(
+          padding: EdgeInsets.only(
+              top: 15, left: i % 2 == 0 ? 0 : 7.5, right: i % 2 == 0 ? 7.5 : 0),
+          child: Image.memory(
+            base64.decode(base64Images[i]),
+            fit: BoxFit.cover,
+          ),
+        ),
+        itemCount: base64Images.length,
       ),
-      itemCount: base64Images.length,
     );
   }
 
@@ -120,7 +124,9 @@ class _HomePageState extends State<HomePage>
                   enablePullUp: false,
                   enablePullDown: true,
                   child: buildCtn(),
-                  header: WaterDropMaterialHeader(),
+                  header: WaterDropMaterialHeader(
+                    backgroundColor: Colors.black54,
+                  ),
                   onRefresh: () async {
                     await extractImages(googleId);
                   },
