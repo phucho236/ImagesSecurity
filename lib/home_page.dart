@@ -35,32 +35,40 @@ class _HomePageState extends State<HomePage>
   init() {
     Future.delayed(Duration.zero, () {
       googleId = context.read<ProfileUserProvider>().profileUser;
-      extractImages(googleId);
     });
   }
 
   Widget buildCtn() {
-    return SingleChildScrollView(
-      child: GridView.builder(
-        physics: ClampingScrollPhysics(),
-        shrinkWrap: true,
-        primary: true,
-        padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: (0.55),
-        ),
-        itemBuilder: (c, i) => Padding(
-          padding: EdgeInsets.only(
-              top: 15, left: i % 2 == 0 ? 0 : 7.5, right: i % 2 == 0 ? 7.5 : 0),
-          child: Image.memory(
-            base64.decode(base64Images[i]),
-            fit: BoxFit.cover,
-          ),
-        ),
-        itemCount: base64Images.length,
-      ),
-    );
+    return base64Images.length < 1
+        ? Center(
+            child: Text(
+              "You Don't Have Images",
+              style: TextStyle(color: Colors.white,fontSize: 17),
+            ),
+          )
+        : SingleChildScrollView(
+            child: GridView.builder(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
+              primary: true,
+              padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: (0.55),
+              ),
+              itemBuilder: (c, i) => Padding(
+                padding: EdgeInsets.only(
+                    top: 15,
+                    left: i % 2 == 0 ? 0 : 7.5,
+                    right: i % 2 == 0 ? 7.5 : 0),
+                child: Image.memory(
+                  base64.decode(base64Images[i]),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              itemCount: base64Images.length,
+            ),
+          );
   }
 
   @override
