@@ -181,11 +181,8 @@ class _LoginPageState extends State<LoginPage> {
                 GradientText(
                   "Images Security",
                   shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
-                  gradient: Gradients.hotLinear,
-                  style: TextStyle(
-                    fontSize: 26.0,
-                      fontWeight: FontWeight.bold
-                  ),
+                  gradient: Gradients.coralCandyGradient,
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
                 ),
                 // Text(
                 //   "Images Security",
@@ -195,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                 //       fontWeight: FontWeight.bold),
                 // ),
                 Container(
-                  height: 45,
+                  height: 55,
                 ),
               ],
             ),

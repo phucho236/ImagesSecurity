@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:images_security/login_page.dart';
 import 'package:images_security/profile_user_provider.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.dark) // Or Brightness.dark
+        );
     final Future<FirebaseApp> _initialization = Firebase.initializeApp();
     return FutureBuilder(
         future: _initialization,

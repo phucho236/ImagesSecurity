@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:images_security/FiresStore/fires_store.dart';
 import 'package:images_security/Model/data_assets_model.dart';
 import 'package:images_security/TestPerformance/test_performance_page.dart';
@@ -16,9 +16,10 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: true);
   List<dynamic> base64Images = [];
   FiresStore firesStore = new FiresStore();
   String googleId;
@@ -60,6 +61,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               decoration: new BoxDecoration(
                   image: DecorationImage(
-                image: new AssetImage("assets/images/background-3.gif"),
+                image: new AssetImage("assets/images/background-1.gif"),
                 fit: BoxFit.cover,
               )),
             ),
@@ -88,16 +90,12 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => TestPerformancePage()),
                         );
                       },
-                      child: Row(
-                        children: [
-                          Text(
-                            "Images Security",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      child: GradientText(
+                        "Images Security",
+                        shaderRect: Rect.fromLTWH(0.0, 0.0, 50.0, 50.0),
+                        gradient: Gradients.jShine,
+                        style: TextStyle(
+                            fontSize: 27.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     IconButton(
@@ -124,9 +122,7 @@ class _HomePageState extends State<HomePage> {
                   child: buildCtn(),
                   header: WaterDropMaterialHeader(),
                   onRefresh: () async {
-                    extractImages(googleId);
-                    if (mounted) setState(() {});
-                    _refreshController.refreshCompleted();
+                    await extractImages(googleId);
                   },
                 ),
               ),
@@ -141,7 +137,6 @@ class _HomePageState extends State<HomePage> {
     List<dynamic> tmp = [];
     await firesStore.getAssetsToken(googleId).then((value) async {
       if (value.length > 0) {
-        print(value.length);
         value.forEach((element) {
           try {
             final jwt = JWT.verify(element, SecretKey(googleId));
@@ -155,9 +150,15 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
-    setState(() {
-      base64Images = tmp;
-      onLoading = false;
-    });
+    if (mounted)
+      setState(() {
+        base64Images = tmp;
+        onLoading = false;
+        _refreshController.refreshCompleted();
+      });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
