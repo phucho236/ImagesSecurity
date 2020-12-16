@@ -60,8 +60,14 @@ class _TestPerformancePageState extends State<TestPerformancePage> {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Text(timeDone2.toString())),
-                      Expanded(child: Text(timeDone3.toString())),
+                      Expanded(
+                          child: Center(
+                              child: Text(
+                                  timeDone2.toString() + " Milliseconds"))),
+                      Expanded(
+                          child: Center(
+                              child: Text(
+                                  timeDone3.toString() + " Milliseconds"))),
                     ],
                   ),
                   Row(

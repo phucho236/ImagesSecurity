@@ -24,7 +24,6 @@ class _PushImagesPageState extends State<PushImagesPage> {
   int lengthProcess = 0;
   bool onDone = false;
   bool isLoading = false;
-  String _message = '';
   static String googleId;
   void _handleMessage(dynamic data) {
     lengthProcess = lengthProcess + 1;
@@ -109,18 +108,6 @@ class _PushImagesPageState extends State<PushImagesPage> {
           ? Center(child: CircularProgressIndicator())
           : Column(
               children: <Widget>[
-                Expanded(
-                    child: ListView(
-                  children: <Widget>[
-                    Text(
-                      "ABCD" + _message,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                )),
                 assets.length > 0
                     ? Expanded(
                         child: buildGridView(),
