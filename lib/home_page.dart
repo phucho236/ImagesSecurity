@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:images_security/FiresStore/fires_store.dart';
 import 'package:images_security/Model/data_assets_model.dart';
 import 'package:images_security/TestPerformance/test_performance_page.dart';
@@ -19,12 +17,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   List<dynamic> base64Images = [];
   FiresStore firesStore = new FiresStore();
   String googleId;
   bool onLoading = true;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     // TODO: implement initState
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     init();
   }
 
-  init() async {
+  init() {
     Future.delayed(Duration.zero, () {
       googleId = context.read<ProfileUserProvider>().profileUser;
       extractImages(googleId);
@@ -40,21 +39,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildCtn() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: StaggeredGridView.countBuilder(
-        physics: ClampingScrollPhysics(),
+    return GridView.builder(
+      physics: ClampingScrollPhysics(),
+      padding: EdgeInsets.only(bottom: 15,left: 15,right: 15),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        itemBuilder: (c, i) {
-          Uint8List asset = base64.decode(base64Images[i]);
-          return Image.memory(asset);
-        },
-        staggeredTileBuilder: (int index) =>
-            new StaggeredTile.count(1, index.isEven ? 2 : 2),
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemCount: base64Images.length,
+        childAspectRatio: (0.55),
       ),
+      itemBuilder: (c, i) => Padding(
+        padding: EdgeInsets.only(
+            top: 15, left: i % 2 == 0 ? 0 : 7.5, right: i % 2 == 0 ? 7.5 : 0),
+        child: Image.memory(
+          base64.decode(base64Images[i]),
+          fit: BoxFit.cover,
+        ),
+      ),
+      itemCount: base64Images.length,
     );
   }
 
@@ -88,15 +88,12 @@ class _HomePageState extends State<HomePage> {
       body: SmartRefresher(
         controller: _refreshController,
         enablePullUp: false,
-        child: base64Images.length > 0
-            ? buildCtn()
-            : Center(
-                child: Text("You don't have Image !"),
-              ),
-        header: WaterDropHeader(),
+        enablePullDown: true,
+        child: buildCtn(),
+        header: WaterDropMaterialHeader(),
         onRefresh: () async {
-          init();
-
+          extractImages(googleId);
+          if (mounted) setState(() {});
           _refreshController.refreshCompleted();
         },
       ),
